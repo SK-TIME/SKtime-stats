@@ -1,727 +1,914 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <section id="sostav">
-  
-</section>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СК ТАЙМ | Состав команды</title>
-    <style>
-        /* --- ОБЩИЕ СТИЛИ В СТИЛЕ ESPN --- */
-        :root {
-            --bg-color: #0d0d0d;
-            --panel-bg: #1a1a1a;
-            --text-color: #f2f2f2;
-            --text-muted: #888;
-            --accent-red: #d00;
-            --accent-blue: #007bff;
-            --border-color: #333;
-            --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СК ТАЙМ | Состав команды</title>
+<style>
+/* ============================================================
+   ТЕМЫ
+   ============================================================ */
+:root {
+  --bg: #0d0d0d;
+  --bg-elevated: #1a1a1a;
+  --bg-card: #161616;
+  --text: #f2f2f2;
+  --text-muted: #888;
+  --text-dim: #555;
+  --border: #2a2a2a;
+  --accent: #d00;
+  --accent-hover: #ff1a1a;
+  --accent-blue: #007bff;
+  --accent-green: #26c281;
+  --shadow: rgba(0,0,0,0.5);
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-elevated: #f5f5f5;
+  --bg-card: #ffffff;
+  --text: #111111;
+  --text-muted: #666666;
+  --text-dim: #999999;
+  --border: #e0e0e0;
+  --accent: #d00;
+  --accent-hover: #b00;
+  --accent-blue: #0066cc;
+  --accent-green: #1a9c66;
+  --shadow: rgba(0,0,0,0.1);
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-family);
-            line-height: 1.5;
-        }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-        a {
-            color: var(--text-color);
-            text-decoration: none;
-        }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-        ul {
-            list-style: none;
-        }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
 
-        /* --- ШАПКА (HEADER) --- */
-        header {
-            background-color: #000;
-            border-bottom: 3px solid var(--accent-red);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+/* ============================================================
+   ШАПКА
+   ============================================================ */
+header {
+  background-color: var(--bg-elevated);
+  border-bottom: 3px solid var(--accent);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
 
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #fff;
-        }
+.logo {
+  font-size: 28px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  transform: skewX(-7deg);
+  display: inline-block;
+  white-space: nowrap;
+}
 
-        .logo span {
-            color: var(--accent-red);
-        }
+.logo span { color: var(--accent); }
 
-        .main-nav ul {
-            display: flex;
-            gap: 20px;
-        }
+.main-nav ul { display: flex; gap: 22px; }
 
-        .main-nav a {
-            font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
+.main-nav a {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+}
 
-        .main-nav a:hover {
-            color: var(--accent-red);
-        }
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
 
-        .main-nav a.active {
-            color: var(--accent-red);
-        }
+.header-right { display: flex; align-items: center; gap: 12px; }
 
-        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.25s ease;
+}
 
-        /* --- ГЛАВНЫЙ БАННЕР --- */
-        .hero {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
-            border: 1px solid var(--border-color);
-            padding: 40px 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            border-radius: 8px;
-        }
+.theme-toggle:hover {
+  border-color: var(--accent);
+  transform: rotate(20deg);
+}
 
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+/* ============================================================
+   КОНТЕЙНЕР
+   ============================================================ */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
 
-        .hero h1 span {
-            color: var(--accent-red);
-        }
+/* ============================================================
+   ЗАГОЛОВОК СТРАНИЦЫ
+   ============================================================ */
+.page-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 3px solid var(--accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 
-        .hero p {
-            color: var(--text-muted);
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+.page-header h1 {
+  font-size: 42px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  transform: skewX(-3deg);
+  display: inline-block;
+}
 
-        /* --- ЗАГОЛОВОК РАЗДЕЛА --- */
-        .section-title {
-            font-size: 20px;
-            font-weight: 800;
-            text-transform: uppercase;
-            border-left: 5px solid var(--accent-red);
-            padding-left: 10px;
-            margin-bottom: 15px;
-        }
+.page-header h1 span { color: var(--accent); }
 
-        /* --- СОСТАВ КОМАНДЫ (ROSTER) --- */
-        .roster-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 20px;
-        }
+.roster-count {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
 
-        .player-card {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-        }
+/* ============================================================
+   ФИЛЬТРЫ ПО ПОЗИЦИЯМ
+   ============================================================ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
 
-        .player-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            border-color: var(--accent-red);
-        }
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
-        .player-photo {
-            width: 100%;
-            height: 260px;
-            background-color: #222;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-size: 14px;
-            text-transform: uppercase;
-            border-bottom: 1px solid var(--border-color);
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%23555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 80px;
-            position: relative;
-        }
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
 
-        .player-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
 
-        /* Номер игрока поверх фото */
-        .player-number {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--accent-red);
-            color: #fff;
-            font-weight: 900;
-            font-size: 18px;
-            padding: 4px 10px;
-            border-radius: 4px;
-            min-width: 40px;
-            text-align: center;
-        }
+/* ============================================================
+   СЕТКА ИГРОКОВ
+   ============================================================ */
+.roster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
 
-        .player-info {
-            padding: 15px;
-        }
+/* ============================================================
+   КАРТОЧКА ИГРОКА
+   ============================================================ */
+.player-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+}
 
-        .player-name {
-            font-size: 18px;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
+.player-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 28px var(--shadow);
+}
 
-        .player-name.captain::after {
-            content: " (К)";
-            color: var(--accent-red);
-            font-size: 14px;
-        }
+/* ── ФОТО ИГРОКА ── */
+.player-photo {
+  width: 100%;
+  height: 280px;
+  background-color: var(--bg-elevated);
+  position: relative;
+  overflow: hidden;
+  /* Заглушка, если нет фото */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%23888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90px;
+}
 
-        .player-position {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            display: block;
-        }
+.player-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-        /* --- БАЗОВАЯ СТАТИСТИКА (ОЧК/ПОДБ/ПЕР) --- */
-        .player-stats-main {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
-        }
+/* Номер игрока */
+.player-number {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 22px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  min-width: 50px;
+  text-align: center;
+  letter-spacing: -1px;
+  box-shadow: 0 4px 12px rgba(221, 0, 0, 0.4);
+}
 
-        .stat-box {
-            background-color: #111;
-            padding: 8px 5px;
-            border-radius: 4px;
-            border: 1px dashed #444;
-            text-align: center;
-        }
+/* Бейдж "Капитан" */
+.player-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
 
-        .stat-box.highlight {
-            background-color: #1c0000;
-            border-color: var(--accent-red);
-        }
+/* Градиент внизу фото для читаемости */
+.player-photo::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+  pointer-events: none;
+}
 
-        .stat-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 2px;
-        }
+/* ── ИНФО ── */
+.player-info {
+  padding: 18px;
+}
 
-        .stat-value {
-            font-size: 17px;
-            font-weight: 800;
-            color: #fff;
-            display: block;
-        }
+.player-name {
+  font-size: 19px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+  transform: skewX(-3deg);
+  display: inline-block;
+}
 
-        .stat-value:empty::before {
-            content: "—";
-            color: #444;
-        }
+.player-position {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: block;
+}
 
-        /* --- ДОПОЛНИТЕЛЬНАЯ СТАТИСТИКА --- */
-        .player-stats-extra {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
-        }
+/* ── ОСНОВНАЯ СТАТИСТИКА (ОЧК/ПОДБ/ПЕР) ── */
+.player-stats-main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
 
-        /* --- ПРОЦЕНТЫ ПОПАДАНИЙ --- */
-        .player-shooting {
-            border-top: 1px solid var(--border-color);
-            padding-top: 10px;
-            margin-top: 5px;
-        }
+.stat-box {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 6px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
 
-        .shooting-title {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
+.stat-box.highlight {
+  background: rgba(221, 0, 0, 0.08);
+  border-color: rgba(221, 0, 0, 0.35);
+}
 
-        .shooting-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-        }
+[data-theme="light"] .stat-box.highlight {
+  background: rgba(221, 0, 0, 0.06);
+  border-color: rgba(221, 0, 0, 0.3);
+}
 
-        .shooting-box {
-            background-color: #0a0a0a;
-            border: 1px solid #2a2a2a;
-            border-radius: 4px;
-            padding: 6px 4px;
-            text-align: center;
-        }
+.stat-label {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
 
-        .shooting-label {
-            font-size: 9px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 3px;
-            letter-spacing: 0.5px;
-        }
+.stat-value {
+  display: block;
+  font-size: 18px;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--text);
+}
 
-        .shooting-value {
-            font-size: 15px;
-            font-weight: 800;
-            color: #4da6ff;
-        }
+.stat-box.highlight .stat-value { color: var(--accent); }
 
-        .shooting-value:empty::before {
-            content: "—";
-            color: #444;
-        }
+/* ── ДОП. СТАТИСТИКА (ПЕРЕХВ/БЛОКИ/ПОТЕРИ) ── */
+.player-stats-extra {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
 
-        /* --- ПОДВАЛ --- */
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 12px;
-        }
+.player-stats-extra .stat-box {
+  padding: 8px 4px;
+}
 
-        /* --- АДАПТИВ --- */
-        @media (max-width: 900px) {
-            .hero h1 {
-                font-size: 32px;
-            }
+.player-stats-extra .stat-value {
+  font-size: 14px;
+  font-style: normal;
+}
 
-            .roster-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+/* ── ПРОЦЕНТЫ ── */
+.player-shooting {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  margin-top: 6px;
+}
+
+.shooting-title {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.shooting-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.shooting-box {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 4px;
+  text-align: center;
+}
+
+.shooting-label {
+  display: block;
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.shooting-value {
+  display: block;
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--accent-blue);
+}
+
+/* ============================================================
+   ПУСТОЙ РЕЗУЛЬТАТ
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   ПОДВАЛ
+   ============================================================ */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   АДАПТИВ
+   ============================================================ */
+@media (max-width: 1000px) {
+  .roster-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .page-header h1 { font-size: 32px; }
+}
+
+@media (max-width: 700px) {
+  .main-nav ul { display: none; }
+  .top-bar { padding: 10px 16px; }
+  .container { padding: 16px; }
+  .roster-grid { grid-template-columns: 1fr; }
+  .page-header h1 { font-size: 26px; }
+}
+</style>
 </head>
 <body>
 
-    <!-- ШАПКА -->
-    <header>
-        <div class="top-bar">
-            <div class="logo">СК <span>ТАЙМ</span></div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html#glav">Главная</a></li>
-                    <li><a href="news.html#latest-news">Новости</a></li>
-                    <li><a href="#">Состав</a></li>
-                    <li><a href="stats.html#stats">Статистика</a></li>
-                    
-                    
-                </ul>
-            </nav>
-        </div>
-    </header>
+<header>
+  <div class="top-bar">
+    <div class="logo">СК <span>ТАЙМ</span></div>
 
-    <div class="container">
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#">Главная</a></li>
+        <li><a href="#">Новости</a></li>
+        <li><a href="#" class="active">Состав</a></li>
+        <li><a href="#">Статистика</a></li>
+      </ul>
+    </nav>
 
-        <!-- ГЛАВНЫЙ БАННЕР -->
-        <section class="hero">
-            <h1>СОСТАВ <span>КОМАНДЫ</span></h1>
-            <p>Официальный сайт баскетбольной команды</p>
-        </section>
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" title="Переключить тему">🌙</button>
+    </div>
+  </div>
+</header>
 
-        <!-- СОСТАВ -->
-        <h2 class="section-title">Игроки сезона 2026</h2>
-        <div class="roster-grid">
+<div class="container">
 
-            <!-- ================== ИГРОК 1: БОГУНОВ ЯРОСЛАВ (КАПИТАН) ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_богунов.jpg" alt="Богунов Ярослав"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name captain">Богунов Ярослав</div>
-                    <span class="player-position">Позиция: —</span>
+  <!-- ЗАГОЛОВОК -->
+  <div class="page-header">
+    <h1>СОСТАВ <span>КОМАНДЫ</span></h1>
+    <div class="roster-count" id="rosterCount">9 игроков</div>
+  </div>
 
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
+  <!-- ФИЛЬТРЫ ПО ПОЗИЦИЯМ -->
+  <div class="filters">
+    <button class="filter-btn active" data-position="all">Все</button>
+    <button class="filter-btn" data-position="guard">Защитники</button>
+    <button class="filter-btn" data-position="forward">Форварды</button>
+    <button class="filter-btn" data-position="center">Центровые</button>
+  </div>
 
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
+  <!-- СЕТКА ИГРОКОВ -->
+  <div class="roster-grid" id="rosterGrid">
 
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- ================ ИГРОК 1: БОГУНОВ (КАПИТАН) ================ -->
+    <div class="player-card" data-position="guard">
+      <div class="player-photo">
+        <!-- <img src="фото_богунов.jpg" alt="Богунов Ярослав"> -->
+        <span class="player-number">7</span>
+        <span class="player-badge">Капитан</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Богунов Ярослав</div>
+        <span class="player-position">Разыгрывающий</span>
 
-            <!-- ================== ИГРОК 2: ВОДОПШИН ФЕДОР ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_водопшин.jpg" alt="Водопшин Федор"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name">Водопшин Федор</div>
-                    <span class="player-position">Позиция: —</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================== ИГРОК 3: КАЛУЖИН НИКИТА ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_калужин_н.jpg" alt="Калужин Никита"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name">Калужин Никита</div>
-                    <span class="player-position">Позиция: —</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================== ИГРОК 4: КАЛУЖИН ЕГОР ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_калужин_е.jpg" alt="Калужин Егор"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name">Калужин Егор</div>
-                    <span class="player-position">Позиция: —</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================== ИГРОК 5: ЛЫСЕНКО ЛЕВ ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_лысенко.jpg" alt="Лысенко Лев"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name">Лысенко Лев</div>
-                    <span class="player-position">Позиция: —</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================== ИГРОК 6: НОВИКОВ АРТЕМ ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_новиков.jpg" alt="Новиков Артем"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name">Новиков Артем</div>
-                    <span class="player-position">Позиция: —</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================== ИГРОК 7: МЕДВЕДЕВ ЕГОР ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_медведев.jpg" alt="Медведев Егор"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name">Медведев Егор</div>
-                    <span class="player-position">Позиция: —</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================== ИГРОК 8: АЗАРИН АНДРЕЙ ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_азарин.jpg" alt="Азарин Андрей"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name">Азарин Андрей</div>
-                    <span class="player-position">Позиция: —</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================== ИГРОК 9: УТЕМЕСОВ МАТВЕЙ ================== -->
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">—</span>
-                    <!-- <img src="фото_утемесов.jpg" alt="Утемесов Матвей"> -->
-                </div>
-                <div class="player-info">
-                    <div class="player-name">Утемесов Матвей</div>
-                    <span class="player-position">Позиция: —</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--
-            ═══════════════════════════════════════════════════════════════
-            ШАБЛОН ДЛЯ НОВОГО ИГРОКА — скопируй и заполни:
-
-            <div class="player-card">
-                <div class="player-photo">
-                    <span class="player-number">НОМЕР</span>
-                    <img src="ПУТЬ_К_ФОТО.jpg" alt="ИМЯ">
-                </div>
-                <div class="player-info">
-                    <div class="player-name">ИМЯ ФАМИЛИЯ</div>
-                    <span class="player-position">Позиция: РОЛЬ</span>
-
-                    <div class="player-stats-main">
-                        <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">ЗНАЧЕНИЕ</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">ЗНАЧЕНИЕ</span></div>
-                        <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">ЗНАЧЕНИЕ</span></div>
-                    </div>
-
-                    <div class="player-stats-extra">
-                        <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">ЗНАЧЕНИЕ</span></div>
-                        <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">ЗНАЧЕНИЕ</span></div>
-                        <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">ЗНАЧЕНИЕ</span></div>
-                    </div>
-
-                    <div class="player-shooting">
-                        <div class="shooting-title">% Попаданий</div>
-                        <div class="shooting-grid">
-                            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">ЗНАЧЕНИЕ</span></div>
-                            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">ЗНАЧЕНИЕ</span></div>
-                            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">ЗНАЧЕНИЕ</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            Для капитана к классу имени добавь captain:
-            <div class="player-name captain">ИМЯ ФАМИЛИЯ</div>
-            ═══════════════════════════════════════════════════════════════
-            -->
-
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
         </div>
 
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- ПОДВАЛ -->
-    <footer>
-        © 2026 СК ТАЙМ — Официальный сайт баскетбольной команды
-    </footer>
+    <!-- ================ ИГРОК 2: ВОДОПШИН ================ -->
+    <div class="player-card" data-position="guard">
+      <div class="player-photo">
+        <!-- <img src="фото_водопшин.jpg" alt="Водопшин Федор"> -->
+        <span class="player-number">10</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Водопшин Федор</div>
+        <span class="player-position">Атакующий защитник</span>
+
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ ИГРОК 3: КАЛУЖИН Н. ================ -->
+    <div class="player-card" data-position="forward">
+      <div class="player-photo">
+        <!-- <img src="фото_калужин_н.jpg" alt="Калужин Никита"> -->
+        <span class="player-number">23</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Калужин Никита</div>
+        <span class="player-position">Лёгкий форвард</span>
+
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ ИГРОК 4: КАЛУЖИН Е. ================ -->
+    <div class="player-card" data-position="forward">
+      <div class="player-photo">
+        <!-- <img src="фото_калужин_е.jpg" alt="Калужин Егор"> -->
+        <span class="player-number">15</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Калужин Егор</div>
+        <span class="player-position">Тяжёлый форвард</span>
+
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ ИГРОК 5: ЛЫСЕНКО ================ -->
+    <div class="player-card" data-position="center">
+      <div class="player-photo">
+        <!-- <img src="фото_лысенко.jpg" alt="Лысенко Лев"> -->
+        <span class="player-number">33</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Лысенко Лев</div>
+        <span class="player-position">Центровой</span>
+
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ ИГРОК 6: НОВИКОВ ================ -->
+    <div class="player-card" data-position="guard">
+      <div class="player-photo">
+        <!-- <img src="фото_новиков.jpg" alt="Новиков Артем"> -->
+        <span class="player-number">3</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Новиков Артем</div>
+        <span class="player-position">Разыгрывающий</span>
+
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ ИГРОК 7: МЕДВЕДЕВ ================ -->
+    <div class="player-card" data-position="guard">
+      <div class="player-photo">
+        <!-- <img src="фото_медведев.jpg" alt="Медведев Егор"> -->
+        <span class="player-number">11</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Медведев Егор</div>
+        <span class="player-position">Атакующий защитник</span>
+
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ ИГРОК 8: АЗАРИН ================ -->
+    <div class="player-card" data-position="forward">
+      <div class="player-photo">
+        <!-- <img src="фото_азарин.jpg" alt="Азарин Андрей"> -->
+        <span class="player-number">21</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Азарин Андрей</div>
+        <span class="player-position">Лёгкий форвард</span>
+
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================ ИГРОК 9: УТЕМЕСОВ ================ -->
+    <div class="player-card" data-position="forward">
+      <div class="player-photo">
+        <!-- <img src="фото_утемесов.jpg" alt="Утемесов Матвей"> -->
+        <span class="player-number">44</span>
+      </div>
+      <div class="player-info">
+        <div class="player-name">Утемесов Матвей</div>
+        <span class="player-position">Тяжёлый форвард</span>
+
+        <div class="player-stats-main">
+          <div class="stat-box highlight"><span class="stat-label">ОЧК</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПОДБ</span><span class="stat-value">—</span></div>
+          <div class="stat-box highlight"><span class="stat-label">ПЕР</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-stats-extra">
+          <div class="stat-box"><span class="stat-label">ПЕРЕХВ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">БЛОКИ</span><span class="stat-value">—</span></div>
+          <div class="stat-box"><span class="stat-label">ПОТЕРИ</span><span class="stat-value">—</span></div>
+        </div>
+
+        <div class="player-shooting">
+          <div class="shooting-title">% Попаданий</div>
+          <div class="shooting-grid">
+            <div class="shooting-box"><span class="shooting-label">2-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">3-ОЧК</span><span class="shooting-value">—</span></div>
+            <div class="shooting-box"><span class="shooting-label">ШТРАФ</span><span class="shooting-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  © 2026 СК ТАЙМ — Официальный сайт баскетбольной команды
+</footer>
+
+<script>
+/* ============================================================
+   ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
+   ============================================================ */
+const themeToggle = document.getElementById('themeToggle');
+const THEME_KEY = 'sktime_theme';
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeToggle.textContent = theme === 'light' ? '☀️' : '🌙';
+  themeToggle.title = theme === 'light' ? 'Переключить на тёмную' : 'Переключить на светлую';
+}
+
+function initTheme() {
+  let saved = localStorage.getItem(THEME_KEY);
+  if (!saved) {
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    saved = prefersLight ? 'light' : 'dark';
+  }
+  applyTheme(saved);
+}
+
+themeToggle.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+  localStorage.setItem(THEME_KEY, next);
+});
+
+initTheme();
+
+/* ============================================================
+   ФИЛЬТРЫ ПО ПОЗИЦИЯМ
+   ============================================================ */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const playerCards = document.querySelectorAll('.player-card');
+const rosterGrid = document.getElementById('rosterGrid');
+const rosterCount = document.getElementById('rosterCount');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const pos = btn.dataset.position;
+    let visible = 0;
+
+    playerCards.forEach(card => {
+      if (pos === 'all' || card.dataset.position === pos) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Обновляем счётчик
+    rosterCount.textContent = visible + ' ' + pluralize(visible, 'игрок', 'игрока', 'игроков');
+
+    // Заглушка, если пусто
+    let emptyEl = rosterGrid.querySelector('.empty-state');
+    if (visible === 0) {
+      if (!emptyEl) {
+        emptyEl = document.createElement('div');
+        emptyEl.className = 'empty-state';
+        emptyEl.textContent = 'На этой позиции пока нет игроков';
+        rosterGrid.appendChild(emptyEl);
+      }
+    } else if (emptyEl) {
+      emptyEl.remove();
+    }
+  });
+});
+
+function pluralize(n, one, few, many) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+  return many;
+}
+</script>
 
 </body>
 </html>
