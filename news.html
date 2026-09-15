@@ -1,431 +1,629 @@
 <!DOCTYPE html>
 <html lang="ru">
-    
-  <section id="latest-news">
-  
-</section>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СК ТАЙМ | Новости команды</title>
-    <style>
-        /* --- ОБЩИЕ СТИЛИ В СТИЛЕ ESPN --- */
-        :root {
-            --bg-color: #0d0d0d;
-            --panel-bg: #1a1a1a;
-            --text-color: #f2f2f2;
-            --text-muted: #888;
-            --accent-red: #d00;
-            --accent-blue: #007bff;
-            --border-color: #333;
-            --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СК ТАЙМ | Новости</title>
+<style>
+/* ============================================================
+   ТЕМЫ
+   ============================================================ */
+:root {
+  --bg: #0d0d0d;
+  --bg-elevated: #1a1a1a;
+  --bg-card: #161616;
+  --text: #f2f2f2;
+  --text-muted: #888;
+  --text-dim: #555;
+  --border: #2a2a2a;
+  --accent: #d00;
+  --accent-hover: #ff1a1a;
+  --accent-blue: #007bff;
+  --shadow: rgba(0,0,0,0.5);
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-elevated: #f5f5f5;
+  --bg-card: #ffffff;
+  --text: #111111;
+  --text-muted: #666666;
+  --text-dim: #999999;
+  --border: #e0e0e0;
+  --accent: #d00;
+  --accent-hover: #b00;
+  --accent-blue: #0066cc;
+  --shadow: rgba(0,0,0,0.1);
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-family);
-            line-height: 1.5;
-        }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-        a {
-            color: var(--text-color);
-            text-decoration: none;
-        }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-        ul {
-            list-style: none;
-        }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
 
-        /* --- ШАПКА (HEADER) --- */
-        header {
-            background-color: #000;
-            border-bottom: 3px solid var(--accent-red);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+/* ============================================================
+   ШАПКА
+   ============================================================ */
+header {
+  background-color: var(--bg-elevated);
+  border-bottom: 3px solid var(--accent);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
 
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #fff;
-        }
+.logo {
+  font-size: 28px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  transform: skewX(-7deg);
+  display: inline-block;
+  white-space: nowrap;
+}
 
-        .logo span {
-            color: var(--accent-red);
-        }
+.logo span { color: var(--accent); }
 
-        .main-nav ul {
-            display: flex;
-            gap: 20px;
-        }
+.main-nav ul { display: flex; gap: 22px; }
 
-        .main-nav a {
-            font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
+.main-nav a {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+}
 
-        .main-nav a:hover {
-            color: var(--accent-red);
-        }
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
 
-        /* Активный пункт меню */
-        .main-nav a.active {
-            color: var(--accent-red);
-        }
+.header-right { display: flex; align-items: center; gap: 12px; }
 
-        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.25s ease;
+}
 
-        /* --- ГЛАВНЫЙ БАННЕР --- */
-        .hero {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
-            border: 1px solid var(--border-color);
-            padding: 40px 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            border-radius: 8px;
-        }
+.theme-toggle:hover {
+  border-color: var(--accent);
+  transform: rotate(20deg);
+}
 
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+/* ============================================================
+   КОНТЕЙНЕР
+   ============================================================ */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
 
-        .hero h1 span {
-            color: var(--accent-red);
-        }
+/* ============================================================
+   ЗАГОЛОВОК СТРАНИЦЫ
+   ============================================================ */
+.page-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 3px solid var(--accent);
+}
 
-        .hero p {
-            color: var(--text-muted);
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+.page-header h1 {
+  font-size: 42px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  transform: skewX(-3deg);
+  display: inline-block;
+}
 
-        /* --- ЗАГОЛОВОК РАЗДЕЛА --- */
-        .section-title {
-            font-size: 20px;
-            font-weight: 800;
-            text-transform: uppercase;
-            border-left: 5px solid var(--accent-red);
-            padding-left: 10px;
-            margin-bottom: 15px;
-        }
+.page-header h1 span { color: var(--accent); }
 
-        /* --- ПАНЕЛЬ --- */
-        .panel {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-        }
+/* ============================================================
+   ФИЛЬТРЫ ПО КАТЕГОРИЯМ
+   ============================================================ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
 
-        /* --- ЛЕНТА НОВОСТЕЙ --- */
-        .news-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
-        /* --- КАРТОЧКА НОВОСТИ --- */
-        .news-card {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-        }
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
 
-        .news-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border-color: var(--accent-red);
-        }
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
 
-        /* Фото новости */
-        .news-photo {
-            width: 100%;
-            height: 380px;
-            background-color: #222;
-            border-bottom: 1px solid var(--border-color);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-size: 14px;
-            text-transform: uppercase;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%23555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 70px;
-        }
+/* ============================================================
+   ГЛАВНАЯ НОВОСТЬ (Featured)
+   ============================================================ */
+.featured {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
 
-        .news-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+.featured:hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px var(--shadow);
+}
 
-        /* Категория (бейдж) */
-        .news-category {
-            position: absolute;
-            top: 14px;
-            left: 14px;
-            background-color: var(--accent-red);
-            color: #fff;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 5px 12px;
-            border-radius: 4px;
-        }
+.featured-photo {
+  min-height: 380px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #111 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+}
 
-        /* Дата поверх фото */
-        .news-date-badge {
-            position: absolute;
-            bottom: 14px;
-            right: 14px;
-            background-color: rgba(0,0,0,0.8);
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 5px 12px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+[data-theme="light"] .featured-photo {
+  background: linear-gradient(135deg, #ddd 0%, #bbb 100%);
+  color: #888;
+}
 
-        /* Тело новости */
-        .news-body {
-            padding: 22px;
-        }
+.featured-body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-        .news-title {
-            font-size: 22px;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            line-height: 1.3;
-            color: #fff;
-        }
+.featured-category {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 5px 12px;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  align-self: flex-start;
+}
 
-        .news-text {
-            color: #c9c9c9;
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 16px;
-        }
+.featured-title {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
 
-        .news-text p {
-            margin-bottom: 12px;
-        }
+.featured-excerpt {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
 
-        .news-text p:last-child {
-            margin-bottom: 0;
-        }
+.featured-meta {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
 
-        /* Подвал карточки */
-        .news-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--border-color);
-            padding-top: 14px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+/* ============================================================
+   СЕТКА НОВОСТЕЙ
+   ============================================================ */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
 
-        .news-author {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.news-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
 
-        .news-author strong {
-            color: var(--accent-red);
-        }
+.news-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px var(--shadow);
+}
 
-        /* --- СООБЩЕНИЕ О ПУСТОЙ ЛЕНТЕ --- */
-        .empty-feed {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 60px 20px;
-            font-size: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.news-item-photo {
+  height: 180px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #111 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+}
 
-        /* --- ПОДВАЛ --- */
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 12px;
-        }
+[data-theme="light"] .news-item-photo {
+  background: linear-gradient(135deg, #ddd 0%, #bbb 100%);
+  color: #888;
+}
 
-        /* --- АДАПТИВ --- */
-        @media (max-width: 900px) {
-            .hero h1 {
-                font-size: 32px;
-            }
-            
-            .news-photo {
-                height: 240px;
-            }
-            .news-title {
-                font-size: 18px;
-            }
-        }
-    </style>
+.news-item-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.news-item-category {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.news-item-title {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.news-item-excerpt {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.news-item-meta {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Бейдж "Главное" на фото */
+.badge-featured {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   ПУСТОЙ РЕЗУЛЬТАТ
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   ПОДВАЛ
+   ============================================================ */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   АДАПТИВ
+   ============================================================ */
+@media (max-width: 1000px) {
+  .featured { grid-template-columns: 1fr; }
+  .featured-photo { min-height: 240px; }
+  .news-grid { grid-template-columns: repeat(2, 1fr); }
+  .page-header h1 { font-size: 32px; }
+}
+
+@media (max-width: 700px) {
+  .main-nav ul { display: none; }
+  .top-bar { padding: 10px 16px; }
+  .container { padding: 16px; }
+  .news-grid { grid-template-columns: 1fr; }
+  .featured-body { padding: 22px; }
+  .featured-title { font-size: 22px; }
+  .page-header h1 { font-size: 26px; }
+}
+</style>
 </head>
 <body>
 
-    <!-- ШАПКА -->
-    <header>
-        <div class="top-bar">
-            <div class="logo">СК <span>ТАЙМ</span></div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html#glav">Главная</a></li>
-                    <li><a href="#">Новости</a></li>
-                    <li><a href="sostav.html#sostav">Состав</a></li>
-                    <li><a href="stats.html#stats">Статистика</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<header>
+  <div class="top-bar">
+    <div class="logo">СК <span>ТАЙМ</span></div>
 
-    <div class="container">
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#">Главная</a></li>
+        <li><a href="#" class="active">Новости</a></li>
+        <li><a href="#">Состав</a></li>
+        <li><a href="#">Статистика</a></li>
+      </ul>
+    </nav>
 
-        <!-- ГЛАВНЫЙ БАННЕР -->
-        <section class="hero">
-            <h1>НОВОСТИ <span>КОМАНДЫ</span></h1>
-            <p>Официальный сайт баскетбольной команды</p>
-        </section>
-
-        <!-- ЛЕНТА НОВОСТЕЙ -->
-        <h2 class="section-title">Последние публикации</h2>
-
-        <div class="news-list">
-
-            <!-- ============================================================= -->
-            <!-- ═══ ПРИМЕР ГОТОВОЙ НОВОСТИ (копируй этот блок для новой) ═══ -->
-            <!-- ============================================================= -->
-            <article class="news-card">
-
-                <!-- ФОТО: замени src на путь к своей картинке.
-                     Если фото нет — оставь пустой div, покажется заглушка. -->
-                <div class="news-photo">
-                    <!-- <img src="фото_победы.jpg" alt="Победа в турнире"> -->
-                    <span class="news-category">Матч</span>
-                    <span class="news-date-badge">14 сентября 2026</span>
-                </div>
-
-                <div class="news-body">
-                    <h3 class="news-title">Победа в турнире Apex Legends</h3>
-
-                    <div class="news-text">
-                        <p>----------------------</p>
-                        <p>---------------------</p>
-                    </div>
-
-                    <div class="news-footer">
-                        <span class="news-author">Автор: <strong>Администратор</strong></span>
-                    </div>
-                </div>
-            </article>
-            <!-- ===================== КОНЕЦ ПРИМЕРА ===================== -->
-
-
-            <!-- ============================================================= -->
-            <!-- ═══ ВТОРАЯ НОВОСТЬ (пример) ═══ -->
-            <!-- ============================================================= -->
-            <article class="news-card">
-                <div class="news-photo">
-                    <!-- <img src="фото_тренировки.jpg" alt="Тренировка"> -->
-                    <span class="news-category">Команда</span>
-                    <span class="news-date-badge">10 сентября 2026</span>
-                </div>
-
-                <div class="news-body">
-                    <h3 class="news-title">Открытая тренировка перед сезоном</h3>
-
-                    <div class="news-text">
-                        <p>----------------------------------------------------------</p>
-                    </div>
-
-                    <div class="news-footer">
-                        <span class="news-author">Автор: <strong>Администратор</strong></span>
-                    </div>
-                </div>
-            </article>
-
-
-            <!--
-            ═══════════════════════════════════════════════════════════════
-            ШАБЛОН ДЛЯ НОВОЙ НОВОСТИ — просто скопируй и заполни:
-
-            <article class="news-card">
-                <div class="news-photo">
-                    <img src="ПУТЬ_К_ФОТО.jpg" alt="ОПИСАНИЕ">
-                    <span class="news-category">КАТЕГОРИЯ</span>
-                    <span class="news-date-badge">ДАТА</span>
-                </div>
-                <div class="news-body">
-                    <h3 class="news-title">ЗАГОЛОВОК</h3>
-                    <div class="news-text">
-                        <p>Текст новости...</p>
-                    </div>
-                    <div class="news-footer">
-                        <span class="news-author">Автор: <strong>Администратор</strong></span>
-                    </div>
-                </div>
-            </article>
-            ═══════════════════════════════════════════════════════════════
-            -->
-
-        </div>
-
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" title="Переключить тему">🌙</button>
     </div>
+  </div>
+</header>
 
-    <!-- ПОДВАЛ -->
-    <footer>
-        © 2026 СК ТАЙМ — Официальный сайт баскетбольной команды
-    </footer>
+<div class="container">
+
+  <!-- ЗАГОЛОВОК -->
+  <div class="page-header">
+    <h1>НОВОСТИ <span>КОМАНДЫ</span></h1>
+  </div>
+
+  <!-- ФИЛЬТРЫ -->
+  <div class="filters">
+    <button class="filter-btn active" data-category="all">Все</button>
+    <button class="filter-btn" data-category="match">Матчи</button>
+    <button class="filter-btn" data-category="team">Команда</button>
+    <button class="filter-btn" data-category="transfer">Трансферы</button>
+    <button class="filter-btn" data-category="training">Тренировки</button>
+  </div>
+
+  <!-- ГЛАВНАЯ НОВОСТЬ -->
+  <article class="featured" data-category="match">
+    <div class="featured-photo">
+      Фото главной новости
+      <span class="badge-featured">Главное</span>
+    </div>
+    <div class="featured-body">
+      <span class="featured-category">Матч</span>
+      <h2 class="featured-title">Победа в турнире Apex Legends</h2>
+      <p class="featured-excerpt">
+        Наша команда одержала уверенную победу в финале регионального турнира, обыграв соперника со счётом 87:72. Отличная игра в защите и точные трёхочковые стали залогом успеха. Лучшим игроком матча признан капитан команды Богунов Ярослав — 24 очка и 8 подборов.
+      </p>
+      <div class="featured-meta">14 сентября 2026 · Администратор</div>
+    </div>
+  </article>
+
+  <!-- СЕТКА НОВОСТЕЙ -->
+  <div class="news-grid" id="newsGrid">
+
+    <article class="news-item" data-category="team">
+      <div class="news-item-photo">Фото</div>
+      <div class="news-item-body">
+        <div class="news-item-category">Команда</div>
+        <h3 class="news-item-title">Открытая тренировка перед сезоном</h3>
+        <p class="news-item-excerpt">Приглашаем всех болельщиков на открытую тренировку команды, которая состоится в ближайшую субботу.</p>
+        <div class="news-item-meta">10 сентября 2026 · Администратор</div>
+      </div>
+    </article>
+
+    <article class="news-item" data-category="transfer">
+      <div class="news-item-photo">Фото</div>
+      <div class="news-item-body">
+        <div class="news-item-category">Трансфер</div>
+        <h3 class="news-item-title">Новый игрок в составе</h3>
+        <p class="news-item-excerpt">Команда усилилась опытным защитником, который присоединится к тренировкам со следующей недели.</p>
+        <div class="news-item-meta">5 сентября 2026 · Администратор</div>
+      </div>
+    </article>
+
+    <article class="news-item" data-category="match">
+      <div class="news-item-photo">Фото</div>
+      <div class="news-item-body">
+        <div class="news-item-category">Матч</div>
+        <h3 class="news-item-title">Разгромная победа в гостях</h3>
+        <p class="news-item-excerpt">СК ТАЙМ уверенно обыграл соперника на выезде со счётом 94:68. Четыре игрока набрали больше 15 очков.</p>
+        <div class="news-item-meta">1 сентября 2026 · Администратор</div>
+      </div>
+    </article>
+
+    <article class="news-item" data-category="training">
+      <div class="news-item-photo">Фото</div>
+      <div class="news-item-body">
+        <div class="news-item-category">Тренировки</div>
+        <h3 class="news-item-title">Новая программа подготовки</h3>
+        <p class="news-item-excerpt">Тренерский штаб представил обновлённую программу физической подготовки на предстоящий сезон.</p>
+        <div class="news-item-meta">28 августа 2026 · Администратор</div>
+      </div>
+    </article>
+
+    <article class="news-item" data-category="team">
+      <div class="news-item-photo">Фото</div>
+      <div class="news-item-body">
+        <div class="news-item-category">Команда</div>
+        <h3 class="news-item-title">Новая форма на сезон</h3>
+        <p class="news-item-excerpt">Представляем новую игровую форму команды на предстоящий сезон. Домашний комплект — красно-чёрный.</p>
+        <div class="news-item-meta">20 августа 2026 · Администратор</div>
+      </div>
+    </article>
+
+    <article class="news-item" data-category="match">
+      <div class="news-item-photo">Фото</div>
+      <div class="news-item-body">
+        <div class="news-item-category">Матч</div>
+        <h3 class="news-item-title">Товарищеский матч с принципиальным соперником</h3>
+        <p class="news-item-excerpt">Команда проведёт товарищеский матч в рамках подготовки к новому сезону. Вход для болельщиков свободный.</p>
+        <div class="news-item-meta">15 августа 2026 · Администратор</div>
+      </div>
+    </article>
+
+  </div>
+
+</div>
+
+<footer>
+  © 2026 СК ТАЙМ — Официальный сайт баскетбольной команды
+</footer>
+
+<script>
+/* ============================================================
+   ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
+   ============================================================ */
+const themeToggle = document.getElementById('themeToggle');
+const THEME_KEY = 'sktime_theme';
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeToggle.textContent = theme === 'light' ? '☀️' : '🌙';
+  themeToggle.title = theme === 'light' ? 'Переключить на тёмную' : 'Переключить на светлую';
+}
+
+function initTheme() {
+  let saved = localStorage.getItem(THEME_KEY);
+  if (!saved) {
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    saved = prefersLight ? 'light' : 'dark';
+  }
+  applyTheme(saved);
+}
+
+themeToggle.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+  localStorage.setItem(THEME_KEY, next);
+});
+
+initTheme();
+
+/* ============================================================
+   ФИЛЬТРЫ ПО КАТЕГОРИЯМ
+   ============================================================ */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const featured   = document.querySelector('.featured');
+const newsItems  = document.querySelectorAll('.news-item');
+const newsGrid   = document.getElementById('newsGrid');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cat = btn.dataset.category;
+
+    // Фильтруем главную новость
+    if (cat === 'all' || featured.dataset.category === cat) {
+      featured.style.display = '';
+    } else {
+      featured.style.display = 'none';
+    }
+
+    // Фильтруем остальные
+    let visibleCount = 0;
+    newsItems.forEach(item => {
+      if (cat === 'all' || item.dataset.category === cat) {
+        item.style.display = '';
+        visibleCount++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    // Если ничего не нашли — показываем заглушку
+    let emptyEl = newsGrid.querySelector('.empty-state');
+    if (visibleCount === 0 && (cat === 'all' || featured.dataset.category !== cat)) {
+      if (!emptyEl) {
+        emptyEl = document.createElement('div');
+        emptyEl.className = 'empty-state';
+        emptyEl.textContent = 'В этой категории пока нет новостей';
+        newsGrid.appendChild(emptyEl);
+      }
+    } else if (emptyEl) {
+      emptyEl.remove();
+    }
+  });
+});
+</script>
 
 </body>
 </html>
