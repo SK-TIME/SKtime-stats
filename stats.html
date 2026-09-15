@@ -1,707 +1,824 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <section id="stats">
-  
-</section>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СК ТАЙМ | Статистика команды</title>
-    <style>
-        :root {
-            --bg-color: #0d0d0d;
-            --panel-bg: #1a1a1a;
-            --text-color: #f2f2f2;
-            --text-muted: #888;
-            --accent-red: #d00;
-            --accent-blue: #007bff;
-            --accent-green: #26c281;
-            --border-color: #333;
-            --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СК ТАЙМ | Трансляции</title>
+<style>
+/* ============================================================
+   ТЕМЫ
+   ============================================================ */
+:root {
+  --bg: #0d0d0d;
+  --bg-elevated: #1a1a1a;
+  --bg-card: #161616;
+  --text: #f2f2f2;
+  --text-muted: #888;
+  --text-dim: #555;
+  --border: #2a2a2a;
+  --accent: #d00;
+  --accent-hover: #ff1a1a;
+  --accent-blue: #007bff;
+  --accent-green: #26c281;
+  --live: #d00;
+  --shadow: rgba(0,0,0,0.5);
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-elevated: #f5f5f5;
+  --bg-card: #ffffff;
+  --text: #111111;
+  --text-muted: #666666;
+  --text-dim: #999999;
+  --border: #e0e0e0;
+  --accent: #d00;
+  --accent-hover: #b00;
+  --accent-blue: #0066cc;
+  --accent-green: #1a9c66;
+  --live: #d00;
+  --shadow: rgba(0,0,0,0.1);
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-family);
-            line-height: 1.5;
-        }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-        a { color: var(--text-color); text-decoration: none; }
-        ul { list-style: none; }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-        /* --- ШАПКА --- */
-        header {
-            background-color: #000;
-            border-bottom: 3px solid var(--accent-red);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
 
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+/* ============================================================
+   ШАПКА
+   ============================================================ */
+header {
+  background-color: var(--bg-elevated);
+  border-bottom: 3px solid var(--accent);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #fff;
-        }
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+}
 
-        .logo span { color: var(--accent-red); }
+.logo {
+  font-size: 28px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  transform: skewX(-7deg);
+  display: inline-block;
+  white-space: nowrap;
+}
 
-        .main-nav ul { display: flex; gap: 20px; }
+.logo span { color: var(--accent); }
 
-        .main-nav a {
-            font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
+.main-nav ul { display: flex; gap: 22px; }
 
-        .main-nav a:hover,
-        .main-nav a.active { color: var(--accent-red); }
+.main-nav a {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+}
 
-        /* --- КОНТЕЙНЕР --- */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
 
-        /* --- БАННЕР --- */
-        .hero {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
-            border: 1px solid var(--border-color);
-            padding: 40px 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            border-radius: 8px;
-        }
+.header-right { display: flex; align-items: center; gap: 12px; }
 
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.25s ease;
+}
 
-        .hero h1 span { color: var(--accent-red); }
+.theme-toggle:hover {
+  border-color: var(--accent);
+  transform: rotate(20deg);
+}
 
-        .hero p {
-            color: var(--text-muted);
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+/* ============================================================
+   КОНТЕЙНЕР
+   ============================================================ */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
 
-        /* --- ЗАГОЛОВОК --- */
-        .section-title {
-            font-size: 20px;
-            font-weight: 800;
-            text-transform: uppercase;
-            border-left: 5px solid var(--accent-red);
-            padding-left: 10px;
-            margin-bottom: 15px;
-        }
+/* ============================================================
+   ЗАГОЛОВОК СТРАНИЦЫ
+   ============================================================ */
+.page-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 3px solid var(--accent);
+}
 
-        .panel {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-        }
+.page-header h1 {
+  font-size: 42px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  transform: skewX(-3deg);
+  display: inline-block;
+}
 
-        /* --- ТАБЛИЦА --- */
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.page-header h1 span { color: var(--accent); }
 
-        th, td {
-            padding: 12px 10px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
+/* ============================================================
+   LIVE-ИНДИКАТОР
+   ============================================================ */
+.live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--live);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 5px 12px;
+  border-radius: 3px;
+  margin-left: 12px;
+  vertical-align: middle;
+}
 
-        th {
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 12px;
-        }
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  animation: pulse 1.5s infinite;
+}
 
-        tr:hover { background-color: rgba(255, 255, 255, 0.03); }
-        td strong { color: #fff; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.85); }
+}
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+/* ============================================================
+   ГЛАВНЫЙ ПЛЕЕР
+   ============================================================ */
+.player-section {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
 
-        /* ============================================================= */
-        /* ═══════════════ БАСКЕТБОЛЬНАЯ ПЛОЩАДКА ═══════════════ */
-        /* ============================================================= */
-        .court-wrapper {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1400 / 750;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(0,0,0,0.6), inset 0 0 80px rgba(0,0,0,0.3);
-            border: 4px solid #1a1a1a;
-            background-color: #d9a77a;
-        }
+.video-player {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
 
-        .court-wrapper svg {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+.video-player iframe,
+.video-player video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
 
-        /* Слой для бросков */
-        .shots-layer {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 5;
-        }
+/* Заглушка плеера, если нет встраивания */
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+  color: #666;
+  gap: 16px;
+}
 
-        /* Точка броска */
-        .shot {
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            transform: translate(-50%, -50%);
-            transition: transform 0.2s, opacity 0.2s;
-            pointer-events: auto;
-            cursor: help;
-            z-index: 5;
-        }
+.video-placeholder .play-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: #fff;
+  transition: transform 0.2s;
+  cursor: pointer;
+  padding-left: 6px;
+}
 
-        .shot:hover {
-            transform: translate(-50%, -50%) scale(1.4);
-            z-index: 10;
-        }
+.video-placeholder .play-icon:hover { transform: scale(1.1); }
 
-        /* Попадание — круг */
-        .shot.made {
-            background-color: var(--accent-green);
-            border: 2px solid #0d0d0d;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(38, 194, 129, 0.9), 0 0 22px rgba(38, 194, 129, 0.5);
-        }
+.video-placeholder .placeholder-text {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
 
-        /* Промах — крестик */
-        .shot.missed { background: transparent; border: none; }
+/* Бейдж LIVE на плеере */
+.player-live-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--live);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
 
-        .shot.missed::before,
-        .shot.missed::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 22px;
-            height: 3px;
-            background-color: var(--accent-red);
-            border-radius: 2px;
-            box-shadow: 0 0 8px rgba(221, 0, 0, 0.9);
-        }
+/* Инфо о матче под плеером */
+.match-info {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 18px 20px;
+  margin-top: -10px;
+  margin-bottom: 0;
+}
 
-        .shot.missed::before { transform: translate(-50%, -50%) rotate(45deg); }
-        .shot.missed::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+.match-title {
+  font-size: 18px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
 
-        /* --- КОНТРОЛЬ --- */
-        .court-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+.match-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
 
-        .filter-btn {
-            background-color: #111;
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 7px 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+/* ============================================================
+   ПРАВАЯ КОЛОНКА: ЧАТ / ИНФО
+   ============================================================ */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-        .filter-btn:hover {
-            border-color: var(--accent-red);
-            color: var(--accent-red);
-        }
+.side-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-        .filter-btn.active {
-            background-color: var(--accent-red);
-            border-color: var(--accent-red);
-            color: #fff;
-        }
+.side-panel-header {
+  background: var(--bg-elevated);
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
 
-        /* Легенда */
-        .legend {
-            display: flex;
-            gap: 20px;
-            margin-left: auto;
-            align-items: center;
-        }
+.side-panel-header.accent {
+  background: var(--accent);
+  color: #fff;
+  border-bottom-color: var(--accent);
+}
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.side-panel-body {
+  padding: 16px;
+}
 
-        .legend-dot {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-color: var(--accent-green);
-            border: 2px solid #0d0d0d;
-        }
+/* Прогноз / соотношение */
+.prob-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
 
-        .legend-cross { position: relative; width: 16px; height: 16px; }
+.prob-row:last-child { border-bottom: none; padding-bottom: 0; }
 
-        .legend-cross::before,
-        .legend-cross::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 16px;
-            height: 3px;
-            background-color: var(--accent-red);
-            border-radius: 2px;
-        }
+.prob-team {
+  font-size: 13px;
+  font-weight: 700;
+}
 
-        .legend-cross::before { transform: translate(-50%, -50%) rotate(45deg); }
-        .legend-cross::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+.prob-value {
+  font-size: 18px;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--accent);
+}
 
-        /* Счётчики */
-        .shot-counter {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
+/* Список фактов */
+.facts-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  display: flex;
+  gap: 10px;
+}
 
-        .counter-item {
-            background-color: #111;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px 18px;
-            flex: 1;
-            min-width: 120px;
-            text-align: center;
-        }
+.facts-list li:last-child { border-bottom: none; }
 
-        .counter-label {
-            display: block;
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-        }
+.facts-list li::before {
+  content: '▪';
+  color: var(--accent);
+  font-weight: 900;
+  flex-shrink: 0;
+}
 
-        .counter-value {
-            font-size: 24px;
-            font-weight: 900;
-            color: #fff;
-        }
+/* ============================================================
+   РАСПИСАНИЕ ТРАНСЛЯЦИЙ
+   ============================================================ */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
 
-        .counter-value.green { color: var(--accent-green); }
-        .counter-value.red   { color: var(--accent-red); }
-        .counter-value.blue  { color: var(--accent-blue); }
+.section-title {
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        /* --- ПОДВАЛ --- */
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 12px;
-        }
+.section-title::before {
+  content: '';
+  width: 5px;
+  height: 22px;
+  background: var(--accent);
+  border-radius: 2px;
+}
 
-        /* --- АДАПТИВ --- */
-        @media (max-width: 900px) {
-            .hero h1 { font-size: 32px; }
-            
-            .grid-2 { grid-template-columns: 1fr; }
-            .legend { margin-left: 0; width: 100%; }
-        }
-    </style>
+/* Список матчей */
+.broadcast-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.broadcast-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.broadcast-item:hover {
+  transform: translateX(4px);
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+/* Дата */
+.broadcast-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-elevated);
+  border-radius: 6px;
+  padding: 10px;
+  border: 1px solid var(--border);
+}
+
+.broadcast-date-day {
+  font-size: 26px;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  color: var(--text);
+}
+
+.broadcast-date-month {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.broadcast-date-time {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Основная инфа */
+.broadcast-main { min-width: 0; }
+
+.broadcast-teams {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.broadcast-tournament {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+
+/* Статус */
+.broadcast-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.broadcast-status.live {
+  background: var(--live);
+  color: #fff;
+}
+
+.broadcast-status.upcoming {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.broadcast-status.soon {
+  background: rgba(221, 0, 0, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(221, 0, 0, 0.4);
+}
+
+/* ============================================================
+   ПУСТОЙ РЕЗУЛЬТАТ
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   ПОДВАЛ
+   ============================================================ */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   АДАПТИВ
+   ============================================================ */
+@media (max-width: 1000px) {
+  .player-section { grid-template-columns: 1fr; }
+  .page-header h1 { font-size: 32px; }
+  .broadcast-item { grid-template-columns: 90px 1fr; }
+  .broadcast-status { grid-column: 1 / -1; justify-self: start; }
+}
+
+@media (max-width: 700px) {
+  .main-nav ul { display: none; }
+  .top-bar { padding: 10px 16px; }
+  .container { padding: 16px; }
+  .page-header h1 { font-size: 26px; }
+  .broadcast-item {
+    grid-template-columns: 70px 1fr;
+    padding: 14px;
+    gap: 14px;
+  }
+  .broadcast-date-day { font-size: 20px; }
+  .broadcast-teams { font-size: 14px; }
+}
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="top-bar">
-            <div class="logo">СК <span>ТАЙМ</span></div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html#glav">Главная</a></li>
-                    <li><a href="news.html#latest-news">Новости</a></li>
-                    <li><a href="sostav.html#sostav">Состав</a></li>
-                    <li><a href="#">Статистика</a></li>
-                </ul>
-            </nav>
+<header>
+  <div class="top-bar">
+    <div class="logo">СК <span>ТАЙМ</span></div>
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#">Главная</a></li>
+        <li><a href="#">Новости</a></li>
+        <li><a href="#">Состав</a></li>
+        <li><a href="#" class="active">Трансляции</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" title="Переключить тему">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ЗАГОЛОВОК -->
+  <div class="page-header">
+    <h1>ТРАНСЛЯЦИИ <span>МАТЧЕЙ</span></h1>
+    <span class="live-indicator">
+      <span class="live-dot"></span>
+      В эфире
+    </span>
+  </div>
+
+  <!-- ПЛЕЕР + САЙДБАР -->
+  <div class="player-section">
+
+    <!-- Левая колонка: плеер -->
+    <div>
+      <div class="video-player">
+        <span class="player-live-badge">
+          <span class="live-dot"></span>
+          LIVE
+        </span>
+
+        <!-- 
+          ┌────────────────────────────────────────────────┐
+          │ Как вставить свой плеер:                       │
+          │                                                 │
+          │ 1. YouTube:                                    │
+          │    <iframe src="https://www.youtube.com/embed/ID" │
+          │            allowfullscreen></iframe>            │
+          │                                                 │
+          │ 2. Twitch:                                     │
+          │    <iframe src="https://player.twitch.tv/?channel=КАНАЛ&parent=САЙТ" │
+          │            allowfullscreen></iframe>            │
+          │                                                 │
+          │ 3. VK Видео:                                   │
+          │    <iframe src="https://vk.com/video_ext.php?oid=...&id=..." │
+          │            allowfullscreen></iframe>            │
+          │                                                 │
+          │ 4. Своё видео:                                 │
+          │    <video src="video.mp4" controls></video>     │
+          └────────────────────────────────────────────────┘
+        -->
+
+        <div class="video-placeholder">
+          <div class="play-icon">▶</div>
+          <div class="placeholder-text">Здесь будет трансляция</div>
+          <div class="placeholder-text" style="font-size: 11px; color: #444;">Вставь свой iframe в код</div>
         </div>
-    </header>
+      </div>
 
-    <div class="container">
-
-        <section class="hero">
-            <h1>СТАТИСТИКА <span>КОМАНДЫ</span></h1>
-            <p>Официальный сайт баскетбольной команды</p>
-        </section>
-
-        <h2 class="section-title">Карта бросков</h2>
-
-        <div class="panel" style="margin-bottom: 30px;">
-
-            <div class="court-controls">
-                <button class="filter-btn active" data-player="all">Все игроки</button>
-                <button class="filter-btn" data-player="bogunov">Богунов</button>
-                <button class="filter-btn" data-player="vodopshin">Водопшин</button>
-                <button class="filter-btn" data-player="kal_n">Калужин Н.</button>
-                <button class="filter-btn" data-player="kal_e">Калужин Е.</button>
-                <button class="filter-btn" data-player="lysenko">Лысенко</button>
-                <button class="filter-btn" data-player="novikov">Новиков</button>
-                <button class="filter-btn" data-player="medvedev">Медведев</button>
-                <button class="filter-btn" data-player="azarin">Азарин</button>
-                <button class="filter-btn" data-player="utemesov">Утемесов</button>
-
-                <div class="legend">
-                    <div class="legend-item"><span class="legend-dot"></span> Попал</div>
-                    <div class="legend-item"><span class="legend-cross"></span> Промах</div>
-                </div>
-            </div>
-
-            <div class="shot-counter">
-                <div class="counter-item">
-                    <span class="counter-label">Всего бросков</span>
-                    <span class="counter-value" id="totalShots">0</span>
-                </div>
-                <div class="counter-item">
-                    <span class="counter-label">Попаданий</span>
-                    <span class="counter-value green" id="madeShots">0</span>
-                </div>
-                <div class="counter-item">
-                    <span class="counter-label">Промахов</span>
-                    <span class="counter-value red" id="missedShots">0</span>
-                </div>
-                <div class="counter-item">
-                    <span class="counter-label">% Реализации</span>
-                    <span class="counter-value blue" id="shotPercent">0%</span>
-                </div>
-            </div>
-
-            <!-- ═══════ НАРИСОВАННАЯ ПЛОЩАДКА ═══════ -->
-            <div class="court-wrapper">
-                <svg viewBox="0 0 1400 750" preserveAspectRatio="xMidYMid meet">
-                    <!-- ═══ ФОН ═══ -->
-                    <rect x="0" y="0" width="1400" height="750" fill="#d9a77a"/>
-
-                    <!-- ═══ ГРУППА РАЗМЕТКИ ═══ -->
-                    <g stroke="#ffffff" fill="none" stroke-width="6" stroke-linecap="square">
-
-                        <!-- ВНЕШНЯЯ ГРАНИЦА -->
-                        <rect x="90" y="55" width="1220" height="640"/>
-
-                        <!-- ЦЕНТРАЛЬНАЯ ЛИНИЯ -->
-                        <line x1="700" y1="55" x2="700" y2="695"/>
-
-                        <!-- ЦЕНТРАЛЬНЫЙ КРУГ -->
-                        <circle cx="700" cy="375" r="85"/>
-
-                        <!-- ═════ ЛЕВАЯ ПОЛОВИНА ═════ -->
-
-                        <!-- Зона краски (прямоугольник) -->
-                        <rect x="90" y="250" width="250" height="250"/>
-
-                        <!-- Внутренний прямоугольник (маленький) -->
-                        <rect x="90" y="290" width="200" height="170"/>
-
-                        <!-- Круг штрафного броска -->
-                        <path d="M 340 290 A 85 85 0 0 0 340 460" />
-                        <path d="M 340 290 A 85 85 0 0 1 340 460" stroke-dasharray="12 10"/>
-
-                        <!-- Трёхочковая дуга (левая) -->
-                        <path d="M 90 105 L 200 105 A 300 300 0 0 1 200 645 L 90 645" />
-
-                        <!-- Кольцо (левое) -->
-                        <circle cx="130" cy="375" r="10" stroke="#ff6600" stroke-width="6"/>
-                        <circle cx="130" cy="375" r="22" stroke="#ffffff" stroke-width="3" opacity="0.5"/>
-
-                        <!-- Щит (левая вертикальная линия) -->
-                        <line x1="105" y1="330" x2="105" y2="420" stroke-width="7"/>
-
-                        <!-- ═════ ПРАВАЯ ПОЛОВИНА (зеркально) ═════ -->
-
-                        <!-- Зона краски -->
-                        <rect x="1060" y="250" width="250" height="250"/>
-
-                        <!-- Внутренний прямоугольник -->
-                        <rect x="1110" y="290" width="200" height="170"/>
-
-                        <!-- Круг штрафного броска -->
-                        <path d="M 1060 290 A 85 85 0 0 1 1060 460" />
-                        <path d="M 1060 290 A 85 85 0 0 0 1060 460" stroke-dasharray="12 10"/>
-
-                        <!-- Трёхочковая дуга (правая) -->
-                        <path d="M 1310 105 L 1200 105 A 300 300 0 0 0 1200 645 L 1310 645" />
-
-                        <!-- Кольцо (правое) -->
-                        <circle cx="1270" cy="375" r="10" stroke="#ff6600" stroke-width="6"/>
-                        <circle cx="1270" cy="375" r="22" stroke="#ffffff" stroke-width="3" opacity="0.5"/>
-
-                        <!-- Щит (правая вертикальная линия) -->
-                        <line x1="1295" y1="330" x2="1295" y2="420" stroke-width="7"/>
-                    </g>
-
-                    <!-- ═══ УСИКИ (маленькие метки на внешней границе) ═══ -->
-                    <g stroke="#ffffff" stroke-width="5" fill="none">
-                        <!-- Верхние -->
-                        <line x1="450" y1="40" x2="450" y2="55"/>
-                        <line x1="950" y1="40" x2="950" y2="55"/>
-                        <!-- Нижние -->
-                        <line x1="450" y1="695" x2="450" y2="710"/>
-                        <line x1="950" y1="695" x2="950" y2="710"/>
-                    </g>
-
-                    <!-- ═══ ЛОГОТИП НА ПАРКЕТЕ ═══ -->
-                    <g opacity="0.12">
-                        <text x="700" y="375" text-anchor="middle"
-                              font-family="Segoe UI, sans-serif" font-size="46"
-                              font-weight="900" fill="#5a3a1a" letter-spacing="8">
-                            СК ТАЙМ
-                        </text>
-                    </g>
-                </svg>
-
-                <div class="shots-layer" id="shotsLayer"></div>
-            </div>
-
-            <p style="margin-top: 14px; font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
-                Наведи курсор на точку, чтобы увидеть данные броска
-            </p>
-        </div>
-
-        <!-- СТАТИСТИКА + РАСПИСАНИЕ -->
-        <div class="grid-2">
-            <div class="panel">
-                <h2 class="section-title">Статистика команды за сезон</h2>
-                <table>
-                    <thead>
-                        <tr><th>Показатель</th><th>Значение</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Игры</td><td><strong>—</strong></td></tr>
-                        <tr><td>Победы</td><td><strong>—</strong></td></tr>
-                        <tr><td>Поражения</td><td><strong>—</strong></td></tr>
-                        <tr><td>Очки за игру</td><td><strong>—</strong></td></tr>
-                        <tr><td>Подборы за игру</td><td><strong>—</strong></td></tr>
-                        <tr><td>Передачи за игру</td><td><strong>—</strong></td></tr>
-                        <tr><td>Перехваты за игру</td><td><strong>—</strong></td></tr>
-                        <tr><td>Блоки за игру</td><td><strong>—</strong></td></tr>
-                        <tr><td>Потери за игру</td><td><strong>—</strong></td></tr>
-                        <tr><td>% 2-очковых</td><td><strong>—</strong></td></tr>
-                        <tr><td>% 3-очковых</td><td><strong>—</strong></td></tr>
-                        <tr><td>% штрафных</td><td><strong>—</strong></td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="panel">
-                <h2 class="section-title">Ближайшие матчи</h2>
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-color);">
-                    <span style="font-size:12px; color:var(--text-muted); width:80px;">—</span>
-                    <span style="flex-grow:1; font-weight:600;">СК ТАЙМ — Соперник</span>
-                    <span style="font-weight:800; color:var(--accent-red);">— : —</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-color);">
-                    <span style="font-size:12px; color:var(--text-muted); width:80px;">—</span>
-                    <span style="flex-grow:1; font-weight:600;">Соперник — СК ТАЙМ</span>
-                    <span style="font-weight:800; color:var(--accent-red);">— : —</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-color);">
-                    <span style="font-size:12px; color:var(--text-muted); width:80px;">—</span>
-                    <span style="flex-grow:1; font-weight:600;">СК ТАЙМ — Соперник</span>
-                    <span style="font-weight:800; color:var(--accent-red);">— : —</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
-                    <span style="font-size:12px; color:var(--text-muted); width:80px;">—</span>
-                    <span style="flex-grow:1; font-weight:600;">Соперник — СК ТАЙМ</span>
-                    <span style="font-weight:800; color:var(--accent-red);">— : —</span>
-                </div>
-            </div>
-        </div>
-
+      <div class="match-info">
+        <div class="match-title">СК ТАЙМ — Соперник</div>
+        <div class="match-meta">Регулярный сезон · Сегодня, 19:30</div>
+      </div>
     </div>
 
-    <footer>
-        © 2026 СК ТАЙМ — Официальный сайт баскетбольной команды
-    </footer>
+    <!-- Правая колонка: инфо -->
+    <div class="sidebar">
 
-    <script>
-        /* ================================================================= */
-        /* ═══════════════ ДАННЫЕ О БРОСКАХ ═══════════════ */
-        /* ================================================================= */
-        /*
-        x, y — координаты в процентах (0–100)
-        made — true (попал, кружок) / false (промах, крестик)
-        player — код игрока
+      <div class="side-panel">
+        <div class="side-panel-header accent">
+          Прогноз матча
+        </div>
+        <div class="side-panel-body">
+          <div class="prob-row">
+            <span class="prob-team">СК ТАЙМ</span>
+            <span class="prob-value">—</span>
+          </div>
+          <div class="prob-row">
+            <span class="prob-team">Соперник</span>
+            <span class="prob-value">—</span>
+          </div>
+        </div>
+      </div>
 
-        Ориентиры (по нарисованной площадке):
-        - Левое кольцо:       x ≈ 9,  y = 50
-        - Правое кольцо:      x ≈ 91, y = 50
-        - Левый трёхочковый:  x ≈ 8–22
-        - Центр:              x = 50, y = 50
-        - Правый трёхочковый: x ≈ 78–92
-        */
-        const SHOTS = [
-            // БОГУНОВ
-            { x: 11, y: 50, made: true,  player: 'bogunov' },
-            { x: 15, y: 38, made: true,  player: 'bogunov' },
-            { x: 22, y: 62, made: false, player: 'bogunov' },
-            { x: 17, y: 50, made: true,  player: 'bogunov' },
-            { x: 30, y: 32, made: false, player: 'bogunov' },
-            { x: 35, y: 68, made: true,  player: 'bogunov' },
+      <div class="side-panel">
+        <div class="side-panel-header">
+          Факты о матче
+        </div>
+        <div class="side-panel-body">
+          <ul class="facts-list">
+            <li>СК ТАЙМ выиграл последние 3 домашних матча</li>
+            <li>Соперник не проигрывает в гостях 5 игр подряд</li>
+            <li>Встреча команд завершилась победой СК ТАЙМ со счётом 87:72</li>
+          </ul>
+        </div>
+      </div>
 
-            // ВОДОПШИН
-            { x: 12, y: 45, made: true,  player: 'vodopshin' },
-            { x: 24, y: 40, made: false, player: 'vodopshin' },
-            { x: 38, y: 55, made: true,  player: 'vodopshin' },
-            { x: 28, y: 72, made: false, player: 'vodopshin' },
+    </div>
+  </div>
 
-            // КАЛУЖИН Н.
-            { x: 10, y: 55, made: true,  player: 'kal_n' },
-            { x: 20, y: 42, made: true,  player: 'kal_n' },
-            { x: 42, y: 50, made: false, player: 'kal_n' },
+  <!-- РАСПИСАНИЕ ТРАНСЛЯЦИЙ -->
+  <div class="section-header">
+    <div class="section-title">Расписание трансляций</div>
+  </div>
 
-            // КАЛУЖИН Е.
-            { x: 16, y: 60, made: false, player: 'kal_e' },
-            { x: 24, y: 46, made: true,  player: 'kal_e' },
-            { x: 34, y: 36, made: true,  player: 'kal_e' },
-            { x: 46, y: 60, made: false, player: 'kal_e' },
+  <div class="broadcast-list">
 
-            // ЛЫСЕНКО
-            { x: 13, y: 40, made: true,  player: 'lysenko' },
-            { x: 22, y: 56, made: false, player: 'lysenko' },
-            { x: 36, y: 28, made: true,  player: 'lysenko' },
+    <!-- LIVE -->
+    <div class="broadcast-item">
+      <div class="broadcast-date">
+        <div class="broadcast-date-day">14</div>
+        <div class="broadcast-date-month">сен</div>
+        <div class="broadcast-date-time">19:30</div>
+      </div>
+      <div class="broadcast-main">
+        <div class="broadcast-teams">СК ТАЙМ — Соперник</div>
+        <div class="broadcast-tournament">Регулярный сезон · Дома</div>
+      </div>
+      <span class="broadcast-status live">
+        <span class="live-dot"></span>
+        В эфире
+      </span>
+    </div>
 
-            // НОВИКОВ
-            { x: 14, y: 64, made: true,  player: 'novikov' },
-            { x: 26, y: 50, made: false, player: 'novikov' },
-            { x: 40, y: 42, made: true,  player: 'novikov' },
+    <!-- СКОРО -->
+    <div class="broadcast-item">
+      <div class="broadcast-date">
+        <div class="broadcast-date-day">18</div>
+        <div class="broadcast-date-month">сен</div>
+        <div class="broadcast-date-time">20:00</div>
+      </div>
+      <div class="broadcast-main">
+        <div class="broadcast-teams">Соперник — СК ТАЙМ</div>
+        <div class="broadcast-tournament">Регулярный сезон · В гостях</div>
+      </div>
+      <span class="broadcast-status soon">
+        Скоро
+      </span>
+    </div>
 
-            // МЕДВЕДЕВ
-            { x: 18, y: 32, made: true,  player: 'medvedev' },
-            { x: 30, y: 60, made: false, player: 'medvedev' },
-            { x: 44, y: 46, made: true,  player: 'medvedev' },
+    <!-- ПРЕДСТОЯЩИЙ -->
+    <div class="broadcast-item">
+      <div class="broadcast-date">
+        <div class="broadcast-date-day">22</div>
+        <div class="broadcast-date-month">сен</div>
+        <div class="broadcast-date-time">19:00</div>
+      </div>
+      <div class="broadcast-main">
+        <div class="broadcast-teams">СК ТАЙМ — Соперник</div>
+        <div class="broadcast-tournament">Кубок · Дома</div>
+      </div>
+      <span class="broadcast-status upcoming">
+        Предстоящий
+      </span>
+    </div>
 
-            // АЗАРИН
-            { x: 19, y: 50, made: true,  player: 'azarin' },
-            { x: 34, y: 64, made: false, player: 'azarin' },
-            { x: 48, y: 36, made: true,  player: 'azarin' },
+    <div class="broadcast-item">
+      <div class="broadcast-date">
+        <div class="broadcast-date-day">26</div>
+        <div class="broadcast-date-month">сен</div>
+        <div class="broadcast-date-time">21:00</div>
+      </div>
+      <div class="broadcast-main">
+        <div class="broadcast-teams">Соперник — СК ТАЙМ</div>
+        <div class="broadcast-tournament">Регулярный сезон · В гостях</div>
+      </div>
+      <span class="broadcast-status upcoming">
+        Предстоящий
+      </span>
+    </div>
 
-            // УТЕМЕСОВ
-            { x: 13, y: 54, made: false, player: 'utemesov' },
-            { x: 27, y: 38, made: true,  player: 'utemesov' },
-            { x: 43, y: 56, made: true,  player: 'utemesov' }
-        ];
+    <div class="broadcast-item">
+      <div class="broadcast-date">
+        <div class="broadcast-date-day">30</div>
+        <div class="broadcast-date-month">сен</div>
+        <div class="broadcast-date-time">18:30</div>
+      </div>
+      <div class="broadcast-main">
+        <div class="broadcast-teams">СК ТАЙМ — Соперник</div>
+        <div class="broadcast-tournament">Плей-офф · Дома</div>
+      </div>
+      <span class="broadcast-status upcoming">
+        Предстоящий
+      </span>
+    </div>
 
-        const shotsLayer   = document.getElementById('shotsLayer');
-        const totalShots   = document.getElementById('totalShots');
-        const madeShots    = document.getElementById('madeShots');
-        const missedShots  = document.getElementById('missedShots');
-        const shotPercent  = document.getElementById('shotPercent');
-        const filterBtns   = document.querySelectorAll('.filter-btn');
+  </div>
 
-        let activePlayer = 'all';
+</div>
 
-        const playerNames = {
-            bogunov:   'Богунов Ярослав',
-            vodopshin: 'Водопшин Федор',
-            kal_n:     'Калужин Никита',
-            kal_e:     'Калужин Егор',
-            lysenko:   'Лысенко Лев',
-            novikov:   'Новиков Артем',
-            medvedev:  'Медведев Егор',
-            azarin:    'Азарин Андрей',
-            utemesov:  'Утемесов Матвей'
-        };
+<footer>
+  © 2026 СК ТАЙМ — Официальный сайт баскетбольной команды
+</footer>
 
-        function renderShots() {
-            shotsLayer.innerHTML = '';
+<script>
+/* ============================================================
+   ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
+   ============================================================ */
+const themeToggle = document.getElementById('themeToggle');
+const THEME_KEY = 'sktime_theme';
 
-            const filtered = activePlayer === 'all'
-                ? SHOTS
-                : SHOTS.filter(s => s.player === activePlayer);
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeToggle.textContent = theme === 'light' ? '☀️' : '🌙';
+  themeToggle.title = theme === 'light' ? 'Переключить на тёмную' : 'Переключить на светлую';
+}
 
-            filtered.forEach(shot => {
-                const el = document.createElement('div');
-                el.className = 'shot ' + (shot.made ? 'made' : 'missed');
-                el.style.left = shot.x + '%';
-                el.style.top  = shot.y + '%';
-                el.title = `${playerNames[shot.player] || shot.player} — ${shot.made ? 'Попал' : 'Промах'}`;
-                shotsLayer.appendChild(el);
-            });
+function initTheme() {
+  let saved = localStorage.getItem(THEME_KEY);
+  if (!saved) {
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    saved = prefersLight ? 'light' : 'dark';
+  }
+  applyTheme(saved);
+}
 
-            updateCounters();
-        }
+themeToggle.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+  localStorage.setItem(THEME_KEY, next);
+});
 
-        function updateCounters() {
-            const filtered = activePlayer === 'all'
-                ? SHOTS
-                : SHOTS.filter(s => s.player === activePlayer);
-
-            const total  = filtered.length;
-            const made   = filtered.filter(s => s.made).length;
-            const missed = total - made;
-            const pct    = total ? Math.round((made / total) * 100) : 0;
-
-            totalShots.textContent  = total;
-            madeShots.textContent   = made;
-            missedShots.textContent = missed;
-            shotPercent.textContent = pct + '%';
-        }
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activePlayer = btn.dataset.player;
-                renderShots();
-            });
-        });
-
-        renderShots();
-    </script>
+initTheme();
+</script>
 
 </body>
 </html>
